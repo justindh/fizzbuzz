@@ -25,3 +25,31 @@ func TestFizzbuzzFifteen(t *testing.T) {
 		t.Fatal("Testing 15 did not return FizzBuzz")
 	}
 }
+
+func BenchmarkStringCompare(b *testing.B) {
+	for n := 0; n < b.N; n++ {
+		result := Fizzbuzz(1)
+		_ = result
+	}
+
+}
+
+func Benchmark3(b *testing.B) {
+	for n := 0; n < b.N; n++ {
+		result := Fizzbuzz(3)
+		_ = result
+	}
+}
+
+func Benchmark5(b *testing.B) {
+	for n := 0; n < b.N; n++ {
+		result := Fizzbuzz(5)
+		_ = result
+	}
+}
+func Benchmark15(b *testing.B) {
+	for n := 0; n < b.N; n++ {
+		result := Fizzbuzz(15)
+		_ = result
+	}
+}

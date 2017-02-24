@@ -3,7 +3,6 @@ package main
 import (
 	"flag"
 	"fmt"
-	"log"
 	"sync"
 
 	"github.com/justindh/fizzbuzz/fizzbuzz"
@@ -14,10 +13,10 @@ var wg sync.WaitGroup
 func main() {
 	// get cli args
 	amount := flag.Int("amount", 16, "Amount of Numbers to FizzBuzz test")
-	workers := flag.Int("workers", 3, "Amount of concurrent workers")
+	workers := flag.Int("workers", 1, "Amount of concurrent workers")
 	flag.Parse()
 
-	wg.Add(*amount + 1)
+	wg.Add(*amount)
 
 	//  create the job queue
 	jobs := make(chan int, *amount)
@@ -31,21 +30,22 @@ func main() {
 	}
 
 	// build the job queue
-	for j := 1; j <= *amount+1; j++ {
+	for j := 1; j <= *amount; j++ {
 		jobs <- j
 	}
 	close(jobs)
 	wg.Wait()
-	for i := range results {
-		fmt.Println(i)
+	for i := 1; i <= *amount; i++ {
+		fmt.Println(<-results)
+		//<-results
 	}
-	close(results)
 }
 
 func worker(workerid int, jobs <-chan int, results chan<- string) {
 	for j := range jobs {
-		defer wg.Done()
-		log.Printf("Worker %d starting %d", workerid, j)
+		//log.Printf("Worker %d starting %d", workerid, j)
 		results <- fizzbuzz.Fizzbuzz(j)
+		//log.Printf("Worker %d finished %d", workerid, j)
+		wg.Done()
 	}
 }

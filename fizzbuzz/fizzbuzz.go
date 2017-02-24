@@ -13,7 +13,7 @@ func Fizzbuzz(i int) string {
 	if i%5 == 0 {
 		result += "Buzz"
 	}
-	if result == "" {
+	if len(result) == 0 {
 		result = fmt.Sprintf("%v", i)
 	}
 	return result
